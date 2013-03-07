@@ -1,3 +1,9 @@
+# NOTE (JL): This is messy. This feature claims it's for inviting *users* to groups
+# but in fact it is currently only being used for inviting *groups* onto Loomio.
+# Basically the feature is only half-implemented and these cucumber specs are
+# totally misleading as they stand. This is going to require some significant
+# untangling.
+
 Feature: User accepts invitation to Loomio group
   As a future Loomio user
   So that I can make decisions with my group on Loomio
@@ -29,12 +35,6 @@ Feature: User accepts invitation to Loomio group
     When I open the email and click the invitation link
     Then I should become a member of the group
     And I should be taken to the group page
-
-  Scenario: User being the first to accept the invite becomes the group admin
-    Given I have requested to start a loomio group and the requst has been approved
-    When I open the email and click the invitation link
-    And I log in
-    Then I should become the admin of the group
 
   Scenario: User tries to create an account without an invitation
     Given I have not received an invitation

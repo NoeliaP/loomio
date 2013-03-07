@@ -15,8 +15,9 @@ class GroupRequest < ActiveRecord::Base
 
   belongs_to :group
 
-  scope :approved, where(:status => :approved)
   scope :awaiting_approval, where(:status => :awaiting_approval)
+  scope :approved, where(:status => :approved)
+  scope :accepted, where(:status => :accepted)
 
   before_create :mark_spam
 
@@ -24,6 +25,7 @@ class GroupRequest < ActiveRecord::Base
   aasm :column => :status do  # defaults to aasm_state
     state :awaiting_approval, :initial => true
     state :approved
+    state :accepted
     state :ignored
     state :marked_as_spam
 

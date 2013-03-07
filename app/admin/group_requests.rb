@@ -1,8 +1,10 @@
 ActiveAdmin.register GroupRequest do
   scope :awaiting_approval, :default => true
   scope :approved
+  scope :accepted
   scope :ignored
   scope :marked_as_spam
+  scope :all
 
   index do
     column :id
