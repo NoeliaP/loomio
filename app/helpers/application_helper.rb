@@ -88,10 +88,9 @@ module ApplicationHelper
 
       renderer = MarkdownRenderer.new
       markdown = Redcarpet::Markdown.new(renderer, *options)
-      # markdown.render(text).html_safe # this should eventually be sufficient, https://github.com/vmg/redcarpet/issues/209
       Rinku.auto_link(markdown.render(text).html_safe, mode=:all, 'target="_blank"')
     else
-      simple_format(Rinku.auto_link(text, mode=:all, 'target="_blank"'))
+      Rinku.auto_link(simple_format(text), mode=:all, 'target="_blank"')
     end
   end
 
