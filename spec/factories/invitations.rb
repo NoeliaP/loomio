@@ -2,8 +2,7 @@
 
 FactoryGirl.define do
   factory :invitation do
-    recipient_email "MyString"
-    access_level "MyString"
+    admin_email "MyString"
     inviter_id 1
     group_id 1
   end

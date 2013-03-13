@@ -25,9 +25,6 @@ describe InvitationsController do
           sign_in user
           get :show, :group_id => group.id, :id => invitation.token
         end
-        it "sets the flash success message" do
-          flash[:success].should =~ /You have been added/
-        end
         it "redirects to the group page" do
           response.should redirect_to(group_url(group))
         end

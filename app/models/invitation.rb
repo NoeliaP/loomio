@@ -1,5 +1,5 @@
 class Invitation < ActiveRecord::Base
-  attr_accessible :access_level, :group, :group_id, :inviter, :inviter_id, :recipient_email
+  attr_accessible :group, :group_id, :inviter, :inviter_id, :admin_email
 
   belongs_to :inviter, :class_name => "User"
   belongs_to :group
@@ -16,6 +16,7 @@ class Invitation < ActiveRecord::Base
     group = Group.find(group_id)
     group.add_admin!(user)
     self.accepted = true
+    GroupRequest.find_by_group(group).accepted = true
     save!
   end
 

@@ -46,6 +46,10 @@ class GroupRequest < ActiveRecord::Base
     end
   end
 
+  def find_by_group(group)
+    GroupRequest.where(:group => group)
+  end
+
   private
 
   def approve_request
@@ -60,10 +64,9 @@ class GroupRequest < ActiveRecord::Base
     @group.create_welcome_loomio
     self.group_id = @group.id
     save!
-    InvitesUsersToGroup.invite!(:recipient_emails => [admin_email],
-                                :inviter => @group.creator,
-                                :group => @group,
-                                :access_level => "admin")
+    InvitesAdminToStartGroup.invite!(admin_email: admin_email,
+                                     inviter: @group.creator,
+                                     group: @group)
   end
 
   def mark_spam

@@ -13,6 +13,7 @@ class BaseController < InheritedResources::Base
       @invitation = Invitation.find_by_token(session[:invitation])
       if @invitation && (not @invitation.accepted?)
         @invitation.accept!(current_user)
+        flash[:success] = "You have been added to #{@group.name}."
         session[:invitation] = nil
         redirect_to group_url(@invitation.group_id)
       end

@@ -8,10 +8,7 @@ class InvitationsController < BaseController
     else
       session[:invitation] = @invitation.token
       @inviter = @invitation.inviter
-      if user_signed_in?
-        flash[:success] = "You have been added to #{@group.name}."
-        redirect_to group_url(@invitation.group_id)
-      end
+      redirect_to group_url(@invitation.group_id) if user_signed_in?
     end
   end
 

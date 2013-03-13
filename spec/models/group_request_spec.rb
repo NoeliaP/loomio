@@ -47,7 +47,7 @@ describe GroupRequest do
       group.stub :other_sectors_metric=
       group.stub :create_welcome_loomio
       group.stub :save!
-      InvitesUsersToGroup.stub :invite!
+      InvitesAdminToStartGroup.stub :invite!
     end
 
     it "should create a group with the group_request's attributes" do
@@ -65,11 +65,10 @@ describe GroupRequest do
     end
 
     it "should invite the admin to the group" do
-      InvitesUsersToGroup.should_receive(:invite!).
-        with(:recipient_emails => [group_request.admin_email],
-             :inviter => group.creator,
-             :group => group,
-             :access_level => "admin")
+      InvitesAdminToStartGroup.should_receive(:invite!).
+                          with(admin_email: group_request.admin_email,
+                               inviter: group.creator,
+                               group: group)
       group_request.approve!
     end
 
