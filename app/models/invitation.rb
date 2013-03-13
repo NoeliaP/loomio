@@ -1,8 +1,10 @@
 class Invitation < ActiveRecord::Base
-  attr_accessible :group, :group_id, :inviter, :inviter_id, :admin_email
+  attr_accessible :group, :group_id, :inviter, :inviter_id, :admin_email,
+                  :group_request, :group_request_id
 
   belongs_to :inviter, :class_name => "User"
   belongs_to :group
+  belongs_to :group_request
 
   validates_uniqueness_of :token
 
@@ -16,8 +18,8 @@ class Invitation < ActiveRecord::Base
     group = Group.find(group_id)
     group.add_admin!(user)
     self.accepted = true
-    GroupRequest.find_by_group(group).accepted = true
     save!
+    group_request.accept!
   end
 
   private

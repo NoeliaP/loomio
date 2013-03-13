@@ -83,6 +83,13 @@ describe GroupRequest do
     end
   end
 
+  describe "#accept!" do
+    it "should set the status to accepted" do
+      group_request.accept!
+      group_request.should be_accepted
+    end
+  end
+
   describe "#ignore!" do
     it "should set the status to ignored" do
       group_request.ignore!

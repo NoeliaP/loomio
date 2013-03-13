@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Invitation do
   it "generates unique random token" do
     token, token2 = stub(:token), stub(:token2)
-    invitation = build :invitation
+    invitation = build(:invitation)
     Invitation.stub_chain(:where, :exists?).and_return(true, false)
     SecureRandom.should_receive(:urlsafe_base64).twice.and_return token, token2
     invitation.should_receive(:token=).with(token2)
@@ -11,21 +11,37 @@ describe Invitation do
   end
 
   it "to_param returns token instead of id" do
-    invitation = build :invitation
+    invitation = build(:invitation)
     invitation.stub(:token => "5235")
     invitation.to_param.should == invitation.token
   end
 
   describe "#accept!(user)" do
-    it "adds the invited member to the group as an admin and the marks the invitation as accepted" do
-      @user = create(:user)
-      @group = create(:group)
-      invitation = build :invitation
-      Group.stub(:find).and_return(@group)
-      @group.should_receive(:add_admin!).with(@user)
+    let(:user) { create(:user) }
+    let(:group) { create(:group) }
+    let(:invitation) { build(:invitation) }
+    let(:group_request) { stub(:group_request).as_null_object }
+
+    before do
+      Group.stub(:find).and_return(group)
+      invitation.stub(group_request: group_request)
+    end
+
+    after do
+      invitation.accept!(user)
+    end
+
+    it "makes the user an admin for the group" do
+      group.should_receive(:add_admin!).with(user)
+    end
+
+    it "marks the invitation as accepted" do
       invitation.should_receive(:accepted=).with(true)
       invitation.should_receive(:save!)
-      invitation.accept!(@user)
+    end
+
+    it "marks the group request as accepted" do
+      group_request.should_receive :accept!
     end
   end
 end

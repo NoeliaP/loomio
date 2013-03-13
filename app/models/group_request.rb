@@ -46,10 +46,6 @@ class GroupRequest < ActiveRecord::Base
     end
   end
 
-  def find_by_group(group)
-    GroupRequest.where(:group => group)
-  end
-
   private
 
   def approve_request
