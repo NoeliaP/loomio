@@ -66,9 +66,7 @@ describe GroupRequest do
 
     it "should invite the admin to the group" do
       InvitesAdminToStartGroup.should_receive(:invite!).
-                          with(admin_email: group_request.admin_email,
-                               inviter: group.creator,
-                               group: group)
+                          with(group_request)
       group_request.approve!
     end
 
@@ -85,6 +83,7 @@ describe GroupRequest do
 
   describe "#accept!" do
     it "should set the status to accepted" do
+      group_request.status = :approved
       group_request.accept!
       group_request.should be_accepted
     end

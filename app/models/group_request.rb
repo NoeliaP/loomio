@@ -22,34 +22,38 @@ class GroupRequest < ActiveRecord::Base
   before_create :mark_spam
 
   include AASM
-  aasm :column => :status do  # defaults to aasm_state
-    state :awaiting_approval, :initial => true
+  aasm column: :status do  # defaults to aasm_state
+    state :awaiting_approval, initial: true
     state :approved
     state :accepted
     state :ignored
     state :marked_as_spam
 
-    event :approve, :before => :approve_request do
-      transitions :to => :approved, :from => [:awaiting_approval, :ignored, :marked_as_spam]
+    event :approve, before: :approve_request do
+      transitions to: :approved, from: [:awaiting_approval, :ignored, :marked_as_spam]
+    end
+
+    event :accept do
+      transitions to: :accepted, from: [:approved]
     end
 
     event :ignore do
-      transitions :to => :ignored, :from => [:awaiting_approval, :marked_as_spam]
+      transitions to: :ignored, from: [:awaiting_approval, :marked_as_spam]
     end
 
     event :mark_as_already_approved do
-      transitions :to => :approved, :from => [:awaiting_approval, :ignored]
+      transitions to: :approved, from: [:awaiting_approval, :ignored]
     end
 
     event :mark_as_spam do
-      transitions :to => :marked_as_spam, :from => [:awaiting_approval]
+      transitions to: :marked_as_spam, from: [:awaiting_approval]
     end
   end
 
   private
 
   def approve_request
-    @group = Group.new :name => name
+    @group = Group.new name: name
     @group.creator = User.loomio_helper_bot
     @group.cannot_contribute = cannot_contribute
     @group.max_size = max_size
@@ -58,11 +62,9 @@ class GroupRequest < ActiveRecord::Base
     @group.distribution_metric = distribution_metric
     @group.save!
     @group.create_welcome_loomio
-    self.group_id = @group.id
+    self.group = @group
     save!
-    InvitesAdminToStartGroup.invite!(admin_email: admin_email,
-                                     inviter: @group.creator,
-                                     group: @group)
+    InvitesAdminToStartGroup.invite!(self)
   end
 
   def mark_spam

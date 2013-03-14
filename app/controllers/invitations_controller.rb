@@ -7,7 +7,6 @@ class InvitationsController < BaseController
       render "invitation_accepted_error_page"
     else
       session[:invitation] = @invitation.token
-      @inviter = @invitation.inviter
       redirect_to group_url(@invitation.group_id) if user_signed_in?
     end
   end

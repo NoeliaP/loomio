@@ -3,7 +3,6 @@ require 'spec_helper'
 describe InvitationsController do
   let(:group) { mock_model Group }
   let(:invitation) { mock_model Invitation, :token => "12345",
-                                            :inviter => nil,
                                             :group_id => group.id }
   describe "#show" do
     before do

@@ -18,13 +18,14 @@ describe Invitation do
 
   describe "#accept!(user)" do
     let(:user) { create(:user) }
-    let(:group) { create(:group) }
-    let(:invitation) { build(:invitation) }
-    let(:group_request) { stub(:group_request).as_null_object }
+    let(:group) { mock_model(Group, add_admin!: true) }
+    let(:invitation) { create(:invitation) }
+    let(:group_request) { stub(group_id: group.id,
+                               accept!: true) }
 
     before do
-      Group.stub(:find).and_return(group)
       invitation.stub(group_request: group_request)
+      Group.stub(:find).with(group.id).and_return(group)
     end
 
     after do
