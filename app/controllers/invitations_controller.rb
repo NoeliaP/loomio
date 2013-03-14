@@ -15,7 +15,8 @@ class InvitationsController < BaseController
 
   def get_resources
     @group = Group.find(params[:group_id])
-    @invitation = Invitation.where(:group_id => params[:group_id],
-                                  :token => params[:id]).first
+    @invitation = Invitation.includes(:group_request).
+                  where("group_requests.group_id = ?", params[:group_id]).
+                  where(:token => params[:id]).first
   end
 end

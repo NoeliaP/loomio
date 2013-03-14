@@ -81,10 +81,33 @@ describe GroupRequest do
     end
   end
 
-  describe "#accept!" do
-    it "should set the status to accepted" do
+  describe "#accept!(user)" do
+    let(:group) { mock_model(Group) }
+    let(:invitation) { stub(:invitation) }
+    let(:user) { stub(:user) }
+
+    before do
+      Invitation.stub_chain(:where, :first).and_return(invitation)
+      invitation.stub(:accepted=)
+      invitation.stub(:save!)
+      group.stub(:add_admin!)
       group_request.status = :approved
-      group_request.accept!
+      group_request.group = group
+    end
+
+    it "makes the user an admin of the group" do
+      group.should_receive(:add_admin!).with(user)
+      group_request.accept!(user)
+    end
+
+    it "sets invitation.status to accepted" do
+      invitation.should_receive(:accepted=).with(true)
+      invitation.should_receive(:save!)
+      group_request.accept!(user)
+    end
+
+    it "sets the status to accepted" do
+      group_request.accept!(user)
       group_request.should be_accepted
     end
   end

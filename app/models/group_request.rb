@@ -33,7 +33,7 @@ class GroupRequest < ActiveRecord::Base
       transitions to: :approved, from: [:awaiting_approval, :ignored, :marked_as_spam]
     end
 
-    event :accept do
+    event :accept_request do
       transitions to: :accepted, from: [:approved]
     end
 
@@ -49,6 +49,15 @@ class GroupRequest < ActiveRecord::Base
       transitions to: :marked_as_spam, from: [:awaiting_approval]
     end
   end
+
+  def accept!(user)
+    group.add_admin!(user)
+    invitation = Invitation.where(group_request_id: id).first
+    invitation.accepted = true
+    invitation.save!
+    accept_request!
+  end
+
 
   private
 

@@ -8,16 +8,10 @@ class Invitation < ActiveRecord::Base
 
   before_validation :generate_token, :on => :create
 
+  delegate :group_id, :group, :admin_email, to: :group_request
+
   def to_param
     token
-  end
-
-  def accept!(user)
-    group = Group.find(group_request.group_id)
-    group.add_admin!(user)
-    self.accepted = true
-    save!
-    group_request.accept!
   end
 
   private
