@@ -10,7 +10,7 @@ class BaseController < InheritedResources::Base
 
   def check_invitation
     if user_signed_in? && session[:invitation]
-      new_group_invitation = Invitation.find_by_token(session[:invitation])
+      new_group_invitation = GroupRequest.find_by_token(session[:invitation])
       if new_group_invitation
         group_request = new_group_invitation.group_request
         unless group_request.accepted?

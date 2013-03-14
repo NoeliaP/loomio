@@ -6,5 +6,8 @@ class RemoveColumnsFromInvitations < ActiveRecord::Migration
   end
 
   def down
+    add_column :invitations, :admin_email, :string
+    add_column :invitations, :inviter_id, :integer
+    add_column :invitations, :group_id, :integer
   end
 end
