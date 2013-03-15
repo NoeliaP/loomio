@@ -47,7 +47,7 @@ describe GroupRequest do
       group.stub :other_sectors_metric=
       group.stub :create_welcome_loomio
       group.stub :save!
-      InvitesAdminToStartGroup.stub :invite!
+      StartGroupMailer.stub_chain(:invite_admin_to_start_group, :deliver)
     end
 
     it "should create a group with the group_request's attributes" do
@@ -65,7 +65,7 @@ describe GroupRequest do
     end
 
     it "should invite the admin to the group" do
-      InvitesAdminToStartGroup.should_receive(:invite!).
+      StartGroupMailer.should_receive(:invite_admin_to_start_group).
                           with(group_request)
       group_request.approve!
     end
@@ -83,13 +83,9 @@ describe GroupRequest do
 
   describe "#accept!(user)" do
     let(:group) { mock_model(Group) }
-    let(:invitation) { stub(:invitation) }
     let(:user) { stub(:user) }
 
     before do
-      Invitation.stub_chain(:where, :first).and_return(invitation)
-      invitation.stub(:accepted=)
-      invitation.stub(:save!)
       group.stub(:add_admin!)
       group_request.status = :approved
       group_request.group = group
@@ -97,12 +93,6 @@ describe GroupRequest do
 
     it "makes the user an admin of the group" do
       group.should_receive(:add_admin!).with(user)
-      group_request.accept!(user)
-    end
-
-    it "sets invitation.status to accepted" do
-      invitation.should_receive(:accepted=).with(true)
-      invitation.should_receive(:save!)
       group_request.accept!(user)
     end
 
