@@ -10,6 +10,8 @@ class GroupRequest < ActiveRecord::Base
   validates :admin_email, :presence => true, :email => true
   validates :expected_size, :presence => true
   validates :distribution_metric, :presence => true
+  validates :token, :uniqueness => true, :presence => true,
+            :length => {:minimum => 20}
 
   serialize :sectors_metric, Array
 
@@ -27,6 +29,7 @@ class GroupRequest < ActiveRecord::Base
     state :approved
     state :accepted
     state :ignored
+    state :manually_approved
     state :marked_as_spam
 
     event :approve, before: :approve_request do
@@ -41,8 +44,8 @@ class GroupRequest < ActiveRecord::Base
       transitions to: :ignored, from: [:awaiting_approval, :marked_as_spam]
     end
 
-    event :mark_as_already_approved do
-      transitions to: :approved, from: [:awaiting_approval, :ignored]
+    event :mark_as_manually_approved do
+      transitions to: :manually_approved, from: [:awaiting_approval, :ignored]
     end
 
     event :mark_as_spam do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130313005149) do
+ActiveRecord::Schema.define(:version => 20130314013602) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(:version => 20130313005149) do
     t.integer  "distribution_metric"
     t.string   "sectors_metric"
     t.string   "other_sectors_metric"
+    t.string   "token"
   end
 
   add_index "group_requests", ["group_id"], :name => "index_group_requests_on_group_id"
@@ -170,14 +171,12 @@ ActiveRecord::Schema.define(:version => 20130313005149) do
   add_index "groups", ["parent_id"], :name => "index_groups_on_parent_id"
 
   create_table "invitations", :force => true do |t|
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.string   "token"
-    t.boolean  "accepted",    :default => false
-    t.string   "admin_email"
-    t.integer  "inviter_id"
-    t.integer  "group_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "group_request_id"
   end
+
+  add_index "invitations", ["group_request_id"], :name => "index_invitations_on_group_request_id"
 
   create_table "memberships", :force => true do |t|
     t.integer  "group_id"

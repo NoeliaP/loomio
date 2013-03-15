@@ -32,7 +32,7 @@ ActiveAdmin.register GroupRequest do
       if group_request.awaiting_approval? or group_request.ignored?
         link += " | "
         link += link_to "Already Approved",
-               mark_as_already_approved_admin_group_request_path(group_request.id),
+               mark_as_manually_approved_admin_group_request_path(group_request.id),
                :method => :put, :id => "approve_group_request_#{group_request.id}"
       end
       link.html_safe
@@ -57,9 +57,9 @@ ActiveAdmin.register GroupRequest do
     redirect_to admin_group_requests_path, :notice => "Group request ignored."
   end
 
-  member_action :mark_as_already_approved, :method => :put do
+  member_action :mark_as_manually_approved, :method => :put do
     group_request = GroupRequest.find(params[:id])
-    group_request.mark_as_already_approved!
+    group_request.mark_as_manually_approved!
     redirect_to admin_group_requests_path,
       :notice => "Group marked as 'already approved': " +
       group_request.name

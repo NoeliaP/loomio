@@ -6,7 +6,9 @@ class StartGroupMailer < ActionMailer::Base
   #
   #   en.group_invitation_mailer.invite_member.subject
   #
+
   def invite_admin_to_start_group(invitation)
+    @group_request = invitation.group_request
     @group = invitation.group
     @token = invitation.token
 

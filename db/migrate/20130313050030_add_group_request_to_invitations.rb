@@ -1,5 +1,6 @@
 class AddGroupRequestToInvitations < ActiveRecord::Migration
   class Invitation < ActiveRecord::Base
+    belongs_to :group_request
   end
   class GroupRequest < ActiveRecord::Base
   end
