@@ -19,7 +19,6 @@ class AddTokenToGroupRequests < ActiveRecord::Migration
         group_request.status = 'accepted' if invitation.accepted?
         group_request.token = invitation.token
       else
-        debugger
         group_request.token = GroupRequest.generate_token
       end
       group_request.save!

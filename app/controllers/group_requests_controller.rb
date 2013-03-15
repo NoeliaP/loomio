@@ -22,7 +22,7 @@ class GroupRequestsController < BaseController
     if group_request.token != params[:token] || group_request.accepted?
       render "invitation_accepted_error_page"
     else
-      session[:invitation] = group_request.token
+      session[:start_new_group_token] = group_request.token
       redirect_to group_url(group_request.group_id) if user_signed_in?
     end
   end

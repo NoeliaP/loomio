@@ -22,6 +22,7 @@ class GroupRequest < ActiveRecord::Base
   scope :accepted, where(:status => :accepted)
 
   before_create :mark_spam
+  before_validation :generate_token, on: :create
 
   include AASM
   aasm column: :status do  # defaults to aasm_state
@@ -55,9 +56,6 @@ class GroupRequest < ActiveRecord::Base
 
   def accept!(user)
     group.add_admin!(user)
-    invitation = Invitation.where(group_request_id: id).first
-    invitation.accepted = true
-    invitation.save!
     accept_request!
   end
 
@@ -76,10 +74,17 @@ class GroupRequest < ActiveRecord::Base
     @group.create_welcome_loomio
     self.group = @group
     save!
-    InvitesAdminToStartGroup.invite!(self)
+    StartGroupMailer.invite_admin_to_start_group(self).deliver
   end
 
   def mark_spam
     mark_as_spam unless robot_trap.blank?
+  end
+
+  def generate_token
+    begin
+      token = SecureRandom.urlsafe_base64
+    end while GroupRequest.where(:token => token).exists?
+    self.token = token
   end
 end

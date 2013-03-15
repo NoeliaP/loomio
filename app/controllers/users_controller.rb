@@ -4,13 +4,13 @@ class UsersController < BaseController
 
   def new
     @user = User.new
-    unless GroupRequest.find_by_token(session[:invitation])
+    unless GroupRequest.find_by_token(session[:start_new_group_token])
       redirect_to root_url
     end
   end
 
   def create
-    @group_request = GroupRequest.find_by_token(session[:invitation])
+    @group_request = GroupRequest.find_by_token(session[:start_new_group_token])
     if @group_request && (not @group_request.accepted?)
       @user = User.new(params[:user])
       if @user.save

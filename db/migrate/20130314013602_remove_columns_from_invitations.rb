@@ -12,6 +12,6 @@ class RemoveColumnsFromInvitations < ActiveRecord::Migration
     add_column :invitations, :inviter_id, :integer
     add_column :invitations, :group_id, :integer
     add_column :invitations, :token, :string
-    add_column :invitations, :accepted, :string
+    add_column :invitations, :accepted, :boolean
   end
 end
