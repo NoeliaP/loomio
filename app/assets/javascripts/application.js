@@ -32,6 +32,5 @@
 //= require notifications
 //= require dashboard
 //= require votes
-//= require group_requests
 //= require jquery.atwho
 //= require pop-over

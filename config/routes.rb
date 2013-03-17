@@ -4,7 +4,6 @@ Loomio::Application.routes.draw do
   devise_for :users, :controllers => { :sessions => 'users/sessions', :invitations => 'users/invitations' }
 
   resources :group_requests, :only => [:create, :new]
-
   match "/request_new_group", :to => "group_requests#start", :as => :request_new_group
   match "/group_request_confirmation", :to => "group_requests#confirmation", :as => :group_request_confirmation
 
