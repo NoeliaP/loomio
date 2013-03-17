@@ -142,7 +142,6 @@ ActiveRecord::Schema.define(:version => 20130308015306) do
     t.string   "other_sectors_metric"
     t.string   "admin_name"
     t.string   "country_name"
-    t.boolean  "can_contribute",       :default => true
   end
 
   add_index "group_requests", ["group_id"], :name => "index_group_requests_on_group_id"
@@ -173,14 +172,14 @@ ActiveRecord::Schema.define(:version => 20130308015306) do
   add_index "groups", ["parent_id"], :name => "index_groups_on_parent_id"
 
   create_table "invitations", :force => true do |t|
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "recipient_email"
-    t.string   "access_level"
     t.integer  "inviter_id"
     t.integer  "group_id"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
     t.string   "token"
-    t.boolean  "accepted",        :default => false
+    t.boolean  "accepted"
+    t.string   "access_level",    :default => "member", :null => false
   end
 
   create_table "memberships", :force => true do |t|

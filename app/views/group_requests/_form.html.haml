@@ -12,7 +12,12 @@
       = f.input :sector, label: "What type of group/organisation is it?", collection: ['community', 'business', 'government', 'other']
       = f.input :description, label: "Why do you want to use Loomio?", placeholder: "Tell us a bit about your group, and why you'd like to use Loomio"
       = f.input :expected_size, label: "How many people to you expect to be in your loomio group?"
-      = f.submit 'Next', :class => "btn btn-large btn-info btn-block", id: "submit-group-request", :data => {:disable_with => "Next"}
+
+      %h1 We're trying something new
+      %p Balancing two principles: money shouldn't be a barrier to access; too achieve maximum  positive social impact on an international scale, Loomio need to be functionally viable.
+      %h2 How would you like to contribute?
+      = f.input :cannot_contribute, collection: {"My group/organisation can pay a subscription for Loomio" => false, "My group/organisation doesn't have the budget to pay for Loomio" => true}, as: :radio_buttons, label: ""
+
+      = f.submit 'Submit Request', :class => "btn btn-large btn-info btn-block", id: "submit-contribution", :data => {:disable_with => "Requesting new group"}
 
       = f.input :robot_trap, :label => false, :placeholder => "Leave this field blank if you're a human", :input_html => { :class => "robot_trap" }
-      = f.input :can_contribute, as: :hidden

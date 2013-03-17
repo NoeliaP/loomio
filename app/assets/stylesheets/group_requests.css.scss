@@ -3,32 +3,8 @@
 // You can use Sass (SCSS) here: http://sass-lang.com
 @import "settings";
 
-// contribute form
-#contribute-page {
-  label {
+body.group_requests.new {
+  label.collection-radio-buttons {
     display: inline;
-    font-size: $font-medium;
   }
-}
-
-
-// contribution form
-.collection-radio-buttons {
-  display: inline;
-  font-size: $font-large;
-}
-.contribution-info { 
-  margin: 3px 5px 0 15px;
-  .control-group { 
-    float: left;
-    padding: 0 5px 0 5px;
-    position: relative;
-    bottom: 5px;
-  }
-  .controls { float: left; }
-  #group_request_contribution_amount{ width: 80px; }
-  #group_request_contribution_frequency { width: 120px; }
-}
-#contribution-label {
-  float: left;
 }

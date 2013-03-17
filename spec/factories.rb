@@ -92,6 +92,6 @@ FactoryGirl.define do
     name Faker::Name.name
     description "MyText"
     expected_size 50
-    can_contribute true
+    cannot_contribute false
   end
 end
