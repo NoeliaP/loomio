@@ -7,8 +7,6 @@ Feature: User requests to create a group on Loomio
     When I visit the Request New Group page
     And I fill in and click the next button on the Request New Group Form
     Then a new Loomio group request should be created
-    And I should be directed to the contribute page
-    When I fill in and submit the contribute page
     Then I should be told that my request will be reviewed shortly
 
   Scenario: User submits an incorrect Request New Group Form
@@ -21,6 +19,4 @@ Feature: User requests to create a group on Loomio
     When I visit the Request New Group page
     And I fill in and submit the Request New Group Form as a Robot
     Then a new Loomio group request should be created and marked as spam
-    And I should be directed to the contribute page
-    When I fill in and submit the contribute page
-    Then I should be told that my request will be reviewed shortly
+    And I should be told that my request will be reviewed shortly

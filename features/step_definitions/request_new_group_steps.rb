@@ -35,19 +35,10 @@ When /^I fill in and submit the Request New Group Form as a Robot$/ do
   find("#submit-group-request").click
 end
 
-When /^I fill in and submit the contribute page$/ do
-  find("#cannot-contribute-option").click
-  find("#submit-contribution").click
-end
-
 When /^I fill in and submit the Request New Group Form incorrectly$/ do
   click_on "request-new-group"
   # try to submit blank form
   find("#submit-group-request").click
-end
-
-Then /^I should be directed to the contribute page$/ do
-  page.should have_css("#contribute-page")
 end
 
 Then /^a new Loomio group request should be created$/ do
